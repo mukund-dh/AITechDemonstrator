@@ -8,7 +8,16 @@ public class AITechDemonstrator : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "GameplayAbilities", "GameplayTasks" });
+
+		PublicIncludePaths.AddRange(new string[]
+		{ 
+			"./AITechDemonstrator/Public",
+            "./AITechDemonstrator/Public/Pawns",
+            "./AITechDemonstrator/Public/Abilities",
+            "./AITechDemonstrator/Public/Attributes",
+            "./AITechDemonstrator/Public/Controllers",
+		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
