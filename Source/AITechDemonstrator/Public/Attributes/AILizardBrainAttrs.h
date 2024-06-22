@@ -23,7 +23,7 @@
  * probably have no effect on the overall state of the lizard brain.
  * 
  */
-UCLASS()
+UCLASS(BlueprintType, Blueprintable)
 class AITECHDEMONSTRATOR_API UAILizardBrainAttrs : public UAIBaseAttributes
 {
 	GENERATED_BODY()

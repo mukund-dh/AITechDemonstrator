@@ -2,6 +2,7 @@
 
 
 #include "Attributes/AIBaseAttributes.h"
+#include "Abilities/AITDAbilitySystemComponent.h"
 
 UAIBaseAttributes::UAIBaseAttributes()
 {
@@ -15,7 +16,7 @@ UWorld* UAIBaseAttributes::GetWorld() const
 	return Outer->GetWorld();
 }
 
-UAbilitySystemComponent* UAIBaseAttributes::GetAbilitySystemComponent() const
+UAITDAbilitySystemComponent* UAIBaseAttributes::GetAbilitySystemComponent() const
 {
-	return GetOwningAbilitySystemComponent();
+	return Cast<UAITDAbilitySystemComponent>(GetOwningAbilitySystemComponent());
 }

@@ -7,7 +7,7 @@
 #include "AbilitySystemComponent.h"
 #include "AIBaseAttributes.generated.h"
 
-//class UAbilitySystemComponent;
+class UAITDAbilitySystemComponent;
 class UWorld;
 
 /**
@@ -27,10 +27,21 @@ class UWorld;
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+/*
+ * Delegate used to broadcast events when an attribute changes. Some of these parameters may be null on clients
+ * @param EffectInstigator	The original instigating actor for this event
+ * @param EffectCauser		The physical actor that caused the change
+ * @param EffectSpec		The full effect spec for this change
+ * @param EffectMagnitude	The raw magnitude, this is before clamping
+ * @param OldValue			The value of the attribute before it was changed
+ * @param NewValue			The value after it was changed
+*/
+DECLARE_MULTICAST_DELEGATE_SixParams(FAITDAttributeChangedEvent, AActor* /*EffectInstigator*/, AActor* /*EffectCauser*/, const FGameplayEffectSpec* /*EffectSpec*/, float /*Magnitude*/, float /*OldValue*/, float /*NewValue*/);
+
 /**
  * 
  */
-UCLASS()
+UCLASS(Abstract)
 class AITECHDEMONSTRATOR_API UAIBaseAttributes : public UAttributeSet
 {
 	GENERATED_BODY()
@@ -42,5 +53,5 @@ public:
 
 	UWorld* GetWorld() const override;
 	
-	UAbilitySystemComponent* GetAbilitySystemComponent() const;
+	UAITDAbilitySystemComponent* GetAbilitySystemComponent() const;
 };

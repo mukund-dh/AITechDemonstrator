@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Attributes/AIBaseAttributes.h"
-#include "AIMiddleBrain.generated.h"
+#include "AITDStrengthSet.generated.h"
 
 /**
  * 
  */
-UCLASS(BlueprintType, Blueprintable)
-class AITECHDEMONSTRATOR_API UAIMiddleBrain : public UAIBaseAttributes
+UCLASS()
+class AITECHDEMONSTRATOR_API UAITDStrengthSet : public UAIBaseAttributes
 {
 	GENERATED_BODY()
 	
