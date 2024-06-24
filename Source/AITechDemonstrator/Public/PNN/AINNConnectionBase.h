@@ -24,6 +24,9 @@ public:
 	float Bias = 0.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Attribute")
-	FGameplayTagContainer AIAttribute;
+	FGameplayTagContainer AttributeTag;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
+	UAITDPhysicalAttrs* PhysicalAttr;
 	
 };

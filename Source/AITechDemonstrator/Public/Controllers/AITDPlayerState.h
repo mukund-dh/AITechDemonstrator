@@ -10,7 +10,9 @@
 
 class UAITDAbilitySystemComponent;
 class UAILizardBrainAttrs;
-class UAITDPhysicalAttrs;
+class UAITDHealthSet;
+class UAITDStrengthSet;
+class UAITDEnduranceSet;
 
 /**
  * 
@@ -59,8 +61,14 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AITD|PlayerState")
 	TObjectPtr<const class UAILizardBrainAttrs> LizardBrainAttrs;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AITD|PlayerState")
-	TObjectPtr<const class UAITDPhysicalAttrs> PhysicalAttrs;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AITD|Traits|Physical")
+	TObjectPtr<const class UAITDHealthSet> HealthAttrs;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AITD|Traits|Physical")
+	TObjectPtr<const class UAITDStrengthSet> StrengthAttrs;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AITD|Traits|Physical")
+	TObjectPtr<const class UAITDEnduranceSet> EnduranceAttrs;
 
 private:
 

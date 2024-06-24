@@ -2,14 +2,16 @@
 
 
 #include "Attributes/AITDPhysicalAttrs.h"
+#include "GameplayEffectExtension.h"
+#include "Abilities/AITDAbilitySystemComponent.h"
 
+UE_DEFINE_GAMEPLAY_TAG(TAG_Gameplay_Damage, "Gameplay.Damage");
+UE_DEFINE_GAMEPLAY_TAG(TAG_Gameplay_DamageImmunity, "Gameplay.Damage.Immunity");
 
 UAITDPhysicalAttrs::UAITDPhysicalAttrs()
-	: Health(100.0f)
-	, Strength(100.0f)
-	, Endurance(100.0f)
-	, MaxHealth(100.0f)
-	, MaxStrength(100.0f)
-	, MaxEndurance(100.0f)
+{
+}
+
+void UAITDPhysicalAttrs::ClampAttribute(const FGameplayAttribute& Attribute, float& NewVal) const
 {
 }

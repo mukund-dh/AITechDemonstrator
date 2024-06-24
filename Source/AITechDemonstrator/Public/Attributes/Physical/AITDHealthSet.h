@@ -3,19 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Attributes/AIBaseAttributes.h"
-#include "NativeGameplayTags.h"
-#include "GameplayEffectExtension.h"
+#include "Attributes/AITDPhysicalAttrs.h"
 #include "AITDHealthSet.generated.h"
 
-UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Gameplay_Damage);
-UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Gameplay_DamageImmunity);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Agent_Health);
 
 /**
- * 
+ * Declares the Health set for our agents/characters. This set contains the Health
+ * and MaxHealth values.
  */
-UCLASS()
-class AITECHDEMONSTRATOR_API UAITDHealthSet : public UAIBaseAttributes
+UCLASS(Blueprintable, BlueprintType)
+class AITECHDEMONSTRATOR_API UAITDHealthSet : public UAITDPhysicalAttrs
 {
 	GENERATED_BODY()
 
@@ -26,14 +24,14 @@ public:
 	ATTRIBUTE_ACCESSORS(UAITDHealthSet, Health);
 	ATTRIBUTE_ACCESSORS(UAITDHealthSet, MaxHealth);
 
-	ATTRIBUTE_ACCESSORS(UAITDHealthSet, Damage);
-	ATTRIBUTE_ACCESSORS(UAITDHealthSet, Healing);
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FAITDAttributeChangedEvent OnMaxHealthChanged;
 
-	mutable FAITDAttributeChangedEvent HealthChanged;
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FAITDAttributeChangedEvent OnHealthChanged;
 
-	mutable FAITDAttributeChangedEvent MaxHealthChanged;
-
-	mutable FAITDAttributeChangedEvent OutOfHealth;
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FAITDAttributeChangedEvent OnOutOfHealth;
 
 	virtual bool PreGameplayEffectExecute(FGameplayEffectModCallbackData& Data) override;
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
@@ -42,34 +40,21 @@ public:
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
 
-	void ClampAttribute(const FGameplayAttribute& Attribute, float NewVal) const;
+	virtual void ClampAttribute(const FGameplayAttribute& Attribute, float& NewVal) const override;
 
 private:
 
-	// Define Attributes and their related maxes
-	UPROPERTY(BlueprintReadOnly, Category = "PhysicalAttributes", Meta = (AllowPrivateAccess = true))
+	// Define the Health Attribute
+	UPROPERTY(BlueprintReadOnly, Category = "PhysicalAttributes", Meta = (HideFromModifiers, AllowPrivateAccess = true))
 	FGameplayAttributeData Health;
 
-	UPROPERTY(BlueprintReadOnly, Category = "PhysicalAttributes", Meta = (AllowPrivateAccess = true))
+	// Define the Maximum Health Attribute
+	UPROPERTY(BlueprintReadOnly, Category = "PhysicalAttributes", Meta = (HideFromModifiers, AllowPrivateAccess = true))
 	FGameplayAttributeData MaxHealth;
 
-	// Keep track of when health falls to 0
-	bool bIsOutOfHealth;
+	bool bIsHealthZero;
 
-	// Keep track of any changes we might experience
-	float HealthBeforeAttributeChanged;
-	float MaxHealthBeforeAttributeChanged;
-
-	//--------------------------------------------------------------------------------------------------------
-	// META ATTRIBUTES - They don't really need to be tracked, but will kick in when any execution happens
-	//--------------------------------------------------------------------------------------------------------
-	
-	// Incoming Healing. Mapped directly to +Health; over a curve to +Strength, +Endurance
-	UPROPERTY(BlueprintReadOnly, Category = "PhysicalAttributes", Meta = (HideFromModifiers, AllowPrivateAccess = true))
-	FGameplayAttributeData Healing;
-
-	// Incoming Damage. Mapped directly to -Health; over a curve to -Strength, -Endurance
-	UPROPERTY(BlueprintReadOnly, Category = "PhysicalAttributes", Meta = (HideFromModifiers, AllowPrivateAccess = true))
-	FGameplayAttributeData Damage;
-	
+	// Keep track of changes to attributes
+	float HealthBeforeAttrChanged;
+	float MaxHealthBeforeAttrChanged;
 };

@@ -5,14 +5,18 @@
 #include "Controllers/AITDAICon.h"
 #include "Controllers/AITDPlayerController.h"
 #include "Attributes/AILizardBrainAttrs.h"
-#include "Attributes/AITDPhysicalAttrs.h"
+#include "Attributes/Physical/AITDHealthSet.h"
+#include "Attributes/Physical/AITDStrengthSet.h"
+#include "Attributes/Physical/AITDEnduranceSet.h"
 #include "Abilities/AITDAbilitySystemComponent.h"
 
 AAITDPlayerState::AAITDPlayerState(const FObjectInitializer& ObjectInitializer)
 {
 	AbilitySystemComponent = CreateDefaultSubobject<UAITDAbilitySystemComponent>(TEXT("Ability System Component"));
 	LizardBrainAttrs = CreateDefaultSubobject<UAILizardBrainAttrs>(TEXT("Lizard Brain Attributes"));
-	PhysicalAttrs = CreateDefaultSubobject<UAITDPhysicalAttrs>(TEXT("Physical Attributes"));
+	HealthAttrs = CreateDefaultSubobject<UAITDHealthSet>(TEXT("Health Attributes"));
+	StrengthAttrs = CreateDefaultSubobject<UAITDStrengthSet>(TEXT("Strength Attributes"));
+	EnduranceAttrs = CreateDefaultSubobject<UAITDEnduranceSet>(TEXT("Endurance Attributes"));
 
 	MyTeamID = FGenericTeamId::NoTeam;
 	MySquadID = INDEX_NONE;
