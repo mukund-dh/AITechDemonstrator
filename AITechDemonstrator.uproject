@@ -11,7 +11,10 @@
 			"AdditionalDependencies": [
 				"Engine",
 				"GameplayAbilities",
-				"AIModule"
+				"AIModule",
+				"ModularGameplay",
+				"EnhancedInput",
+				"CoreUObject"
 			]
 		}
 	],
