@@ -16,19 +16,22 @@ public class AITechDemonstrator : ModuleRules
 			"EnhancedInput", 
 			"GameplayAbilities", 
 			"GameplayTasks", 
-			"GameplayTags" 
+			"GameplayTags",
+			"GameFeatures"
 		});
 
 		PublicIncludePaths.AddRange(new string[]
 		{ 
 			"./AITechDemonstrator/Public",
             "./AITechDemonstrator/Public/PNN",
+            "./AITechDemonstrator/Public/Misc",
             "./AITechDemonstrator/Public/Pawns",
             "./AITechDemonstrator/Public/Input",
             "./AITechDemonstrator/Public/Cameras",
             "./AITechDemonstrator/Public/Abilities",
             "./AITechDemonstrator/Public/Attributes",
             "./AITechDemonstrator/Public/Controllers",
+            "./AITechDemonstrator/Public/GameFeatureActions",
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

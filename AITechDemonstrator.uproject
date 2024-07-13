@@ -14,7 +14,8 @@
 				"AIModule",
 				"ModularGameplay",
 				"EnhancedInput",
-				"CoreUObject"
+				"CoreUObject",
+				"GameFeatures"
 			]
 		}
 	],

@@ -26,15 +26,61 @@ UAITDPawnExtensionComponent::UAITDPawnExtensionComponent(const FObjectInitialize
 
 bool UAITDPawnExtensionComponent::CanChangeInitState(UGameFrameworkComponentManager* Manager, FGameplayTag CurrentState, FGameplayTag DesiredState) const
 {
+    check(Manager);
+
+    APawn* Pawn = GetPawn<APawn>();
+    if (!CurrentState.IsValid() && DesiredState == AITDGameplayTags::InitState_Spawned)
+    {
+        if (Pawn)
+        {
+            // If our pawn is valid, assume that we have already spawned
+            return true;
+        }
+
+        const bool bHasAuthority = Pawn->HasAuthority();
+        const bool bIsLocallyControlled = Pawn->IsLocallyControlled();
+
+        if (bHasAuthority || bIsLocallyControlled)
+        {
+            // Check for being possessed by a controller
+            if (!Pawn->GetController<AController>())
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+    else if (CurrentState == AITDGameplayTags::InitState_DataAvailable && DesiredState == AITDGameplayTags::InitState_DataInitialized)
+    {
+        // Transition to initialize if all states have their data available
+        return Manager->HaveAllFeaturesReachedInitState(Pawn, AITDGameplayTags::InitState_DataAvailable);
+    }
+    else if (CurrentState == AITDGameplayTags::InitState_DataInitialized && DesiredState == AITDGameplayTags::InitState_GameplayReady)
+    {
+        return true;
+    }
+
     return false;
 }
 
 void UAITDPawnExtensionComponent::HandleChangeInitState(UGameFrameworkComponentManager* Manager, FGameplayTag CurrentState, FGameplayTag DesiredState)
 {
+    if (DesiredState == AITDGameplayTags::InitState_DataInitialized)
+    {
+        // This is currently handled by all other components listening for this state change
+    }
 }
 
 void UAITDPawnExtensionComponent::OnActorInitStateChanged(const FActorInitStateChangedParams& Params)
 {
+    if (Params.FeatureName != NAME_ActorFeatureName)
+    {
+        if (Params.FeatureState == AITDGameplayTags::InitState_DataAvailable)
+        {
+            CheckDefaultInitialization();
+        }
+    }
 }
 
 void UAITDPawnExtensionComponent::CheckDefaultInitialization()
@@ -178,10 +224,23 @@ void UAITDPawnExtensionComponent::SetupPlayerInputComponent()
 
 void UAITDPawnExtensionComponent::OnAbilitySystemInitialized_RegisterAndCall(FSimpleMulticastDelegate::FDelegate Delegate)
 {
+    if (!OnAbilitySystemInitialized.IsBoundToObject(Delegate.GetUObject()))
+    {
+        OnAbilitySystemInitialized.Add(Delegate);
+    }
+
+    if (AbilitySystemComponent)
+    {
+        Delegate.Execute();
+    }
 }
 
 void UAITDPawnExtensionComponent::OnAbilitySystemUninitialized_Register(FSimpleMulticastDelegate::FDelegate Delegate)
 {
+    if (!OnAbilitySystemUninitialized.IsBoundToObject(Delegate.GetUObject()))
+    {
+        OnAbilitySystemUninitialized.Add(Delegate);
+    }
 }
 
 void UAITDPawnExtensionComponent::OnRegister()
